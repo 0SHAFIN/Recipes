@@ -43,6 +43,13 @@
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
             border: none;
         }
+        .ratingS {
+            margin-right: 4px;
+            cursor: pointer;
+        }
+        .fa-star {
+            color:#784464;
+        }
         #vR {
             border-left: 1px solid #784464;
             height: 150px;
@@ -51,13 +58,7 @@
         #reName {
             margin-right: 5px;
         }
-        .ratingS {
-            margin-right: 4px;
-            cursor: pointer;
-        }
-        .fa-star {
-            color:#784464;
-        }
+       
         body {
             margin-bottom: 50px;
         }

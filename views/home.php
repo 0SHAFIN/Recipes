@@ -70,8 +70,25 @@ $recipesDetails = getAllRecipes();
     }
     #reTitle{
         margin-left: 220px;
-        margin-bottom: 40px;
         margin-top:70px ;
+    }
+    #card:hover {
+            opacity: 50%;
+        }
+        #cardS {
+            justify-content: start;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            border: none;
+        }
+    .ratingS {
+         margin-right: 4px;
+         cursor: pointer;
+    }
+    .fa-star {
+        color:#784464;
+    }
+    hr{
+        margin-bottom: 40px;
     }
 </style>
 
@@ -225,6 +242,9 @@ $recipesDetails = getAllRecipes();
         Recipes:
     </div>
     <div class="container">
+         <hr>
+    </div>
+    <div class="container">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             <?php if($recipesDetails) {
                 while($row = $recipesDetails->fetch_assoc()) { ?>
@@ -321,6 +341,59 @@ $recipesDetails = getAllRecipes();
                 event.preventDefault();
                 window.location.href = "recipes.php";
             });
+        }
+        var recipeDetails = document.querySelectorAll("#card");
+        recipeDetails.forEach(function(card) {
+            card.addEventListener('click', function(event) {
+                event.preventDefault();
+                window.location.href = "recipesDetails.php";
+            });
+        });
+        var ratingStars = document.querySelectorAll(".ratingS");
+        var cardContainers = document.querySelectorAll("#card");
+
+        ratingStars.forEach(function(star) {
+            star.addEventListener('mouseenter', function(event) {
+                event.preventDefault();
+                cardContainers.forEach(function(card) {
+                    card.classList.add("disabled");
+                });
+            });
+
+            star.addEventListener('mouseleave', function(event) {
+                event.preventDefault();
+                cardContainers.forEach(function(card) {
+                    card.classList.remove("disabled");
+                });
+            });
+
+            star.addEventListener('click', function(event) {
+                event.preventDefault();
+                var rating = star.getAttribute("data-rating");
+                highlightStars(rating, star.closest('.card'));
+            });
+        });
+
+        function highlightStars(rating, card) {
+            var stars = card.querySelectorAll(".ratingS");
+            stars.forEach(function(star, index) {
+                if (index < rating) {
+                    star.innerHTML = '<i class="fas fa-star"></i>'; // solid star for selected rating
+                } else {
+                    star.innerHTML = '<i class="fa-regular fa-star"></i>'; // regular star for unselected
+                }
+            });
+        }
+
+        var disableCardEvents = function(card) {
+            card.classList.add("disabled");
+            card.style.pointerEvents = 'none';
+            card.style.opacity = '1'; // Ensure the card's opacity stays the same
+        }
+
+        var enableCardEvents = function(card) {
+            card.classList.remove("disabled");
+            card.style.pointerEvents = 'auto';
         }
     });
 </script>

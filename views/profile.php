@@ -8,6 +8,7 @@ $phone = $_SESSION['phone'] ?? '';
 $gender = $_SESSION['gender'] ?? '';
 $username = $_SESSION['username'] ?? '';
 $password = $_SESSION['password'] ?? '';
+$userId = $_SESSION['uId'] ?? '';
 $alert = empty($email);
 $errorMsg = "";
 $conn = dbConnection();
@@ -70,10 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
         }
 
         #icons1 {
-            background-color: #784464;
-            border-radius: 50%;
-            scale: .9;
-            color: white;
+            color:white;
+            justify-content: center;
+            align-items: center;
         }
 
         #icons2 {
@@ -104,12 +104,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
                 <li class="nav-item"></li>
                 <li class="nav-item"><a class="nav-link text-white" href="#" id="home">Home</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="#">Category</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="#">Add Recipes</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#" id="addRecipe">Add Recipes</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="#">Contact</a></li>
             </ul>
         </div>
 
-        <div class="m-2 active" id="profile">Name</div>
+        <div class="m-2 active fw-bold" id="profile">
+            <?php echo $name; ?>
+        </div>
         <div class="vr"></div>
         <div class="m-2" id="logout">Logout</div>
     </nav>
@@ -122,8 +124,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
                 $row = mysqli_fetch_assoc($res);
                 $profilePic = $row['profilePic'];
                 ?>
-                <img src="../images/<?php echo $profilePic; ?>" id="imageS">
-                <?php ?>
+                <?php if ($profilePic) : ?>
+                    <img src="../images/<?php echo htmlspecialchars($profilePic, ENT_QUOTES, 'UTF-8'); ?>" id="imageS" alt="Profile Picture">
+                <?php else : ?>
+                    <div class="d-flex justify-content-center" style="background-color:#784464;width:150px;height:150px;border-radius:10px">
+                        <i class="fas fa-user" id="icons1" style="font-size:100px;margin-top:25px"></i>
+                    </div>
+                <?php endif; ?>
                 <div class="">
                     <span class="text-center text-white p-2" style="font-size:13px" id="cngProfile">
                         Change Photo
@@ -134,8 +141,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
             </form>
         </div>
     </div>
-
     <div class="container mt-4" style="background-color:#d7c7d1;width:400px">
+        <div class="d-flex justify-content-between">
+            <div class="p-2">user ID:</div>
+            <div class="p-2"><?php echo htmlspecialchars($userId, ENT_QUOTES, 'UTF-8'); ?></div>
+        </div>
+    </div>
+    <div class="container mt-2" style="background-color:#d7c7d1;width:400px">
         <div class="d-flex justify-content-between" id="carD">
             <div class="p-2">Name:</div>
             <div class="p-2"><?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?></div>
@@ -177,6 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
             <button id="btn" onclick="openEmailModal('password')"><i id="icons2" class="fa-solid fa-pen-to-square"></i></button>
         </div>
     </div>
+   
 
     <!-- Edit Information Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -214,6 +227,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
                 logoutBtn.addEventListener('click', function(event) {
                     event.preventDefault();
                     window.location.href = "login.php";
+                });
+            }
+            var signupBtn = document.getElementById("addRecipe");
+            if (signupBtn) { // Check if the element exists
+                signupBtn.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    window.location.href = "addRecipes.php";
                 });
             }
 

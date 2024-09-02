@@ -30,6 +30,7 @@
                 $_SESSION['email']=$row['email'];
                 $_SESSION['gender']=$row['gender'];
                 $_SESSION['password']=$row['password'];
+                $_SESSION['uId']=$row['uId'];
                 http_response_code(200);
                 $response=array(
                     'status' => 'success',
@@ -54,6 +55,22 @@
                     'value' => $data['value'],
                 );
                 $_SESSION[$data['field']]=$data['value'];
+                echo json_encode($response);
+            }
+            else{
+                http_response_code(200);
+                $response=array(
+                    'status' => 'failed',
+                );
+                echo json_encode($response);
+            }
+            break;
+        case 'addRecipes':
+            if(addRecipes($_SESSION['uId'],$data['reName'],$data['ingredients'],$data['description'],$data['category'],$_SESSION['name'],$data['time'])){
+                http_response_code(200);
+                $response=array(
+                    'status' => 'success',
+                );
                 echo json_encode($response);
             }
             else{

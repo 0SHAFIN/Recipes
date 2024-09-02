@@ -73,45 +73,15 @@
         $result = $conn->query($sql);
         return $result;
     }
-    function getRecipeIdsByUserId($reId) {
+    function getAllRecipes()
+    {
         $conn = dbConnection();
-        $sql = "SELECT recipe_id FROM urecipe WHERE recipe_id = '$reId'";
+        $sql = "SELECT * FROM `urecipe`";
         $result = $conn->query($sql);
-        $recipeIds = [];
-        while ($row = $result->fetch_assoc()) {
-            $recipeIds[] = $row['recipe_id'];
-        }
-        $conn->close();
-        return $recipeIds;
+        return $result;
     }
     
-    function getFirstImageForUserRecipes($userId) {
-        $recipeIds = getRecipeIdsByUserId($userId);
-        
-        // If there are no recipe IDs, return an empty array
-        if (empty($recipeIds)) {
-            return [];
-        }
-    
-        $conn = dbConnection();
-        $ids = implode(',', array_map('intval', $recipeIds));
-        $sql = "SELECT recipe_id, reImage FROM reImages WHERE recipe_id IN ($ids) ORDER BY uid ASC";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $images = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-        $conn->close();
-    
-        // Map recipe ID to the first image URL
-        $imageMap = [];
-        foreach ($images as $image) {
-            if (!isset($imageMap[$image['recipe_id']])) {
-                $imageMap[$image['recipe_id']] = $image['reImage'];
-            }
-        }
-        return $imageMap;
-    }
+  
     
     
     

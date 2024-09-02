@@ -1,6 +1,9 @@
 <?php
+require_once '../model/auth.php';
 session_start();
 $name = $_SESSION['name'];
+$userId=$_SESSION['uId'];
+$recipesDetails = getAllRecipes();
 
 ?>
 <!DOCTYPE html>
@@ -58,6 +61,17 @@ $name = $_SESSION['name'];
     }
     #categorY:hover{
         opacity: 50%;
+    }
+    #text{
+        color: #784464;
+    }
+    .ratingS{
+        color:#784464;
+    }
+    #reTitle{
+        margin-left: 220px;
+        margin-bottom: 40px;
+        margin-top:70px ;
     }
 </style>
 
@@ -204,6 +218,39 @@ $name = $_SESSION['name'];
         <div class="p-2 text-center">
         <h4>Our Services</h4>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim quam fuga aut alias sed est eos sint nam, excepturi animi, neque vitae nostrum iusto ipsum autem dignissimos, hic officiis omnis?
+        </div>
+    </div>
+
+    <div class="fw-bold d-flex" style="font-size:25px;color:#784464" id="reTitle">
+        Recipes:
+    </div>
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <?php if($recipesDetails) {
+                while($row = $recipesDetails->fetch_assoc()) { ?>
+                <div class="col">
+                    <div class="card h-100" id="cardS" style="background-color:#f2ecf0">
+                        <img id="card" src="../recipesimages/<?php echo htmlspecialchars(getRecipeImg($row['reId'])->fetch_assoc()['reImages']); ?>" class="card-img-top" alt="recipe" style="width:100%; height:200px; object-fit:cover;">
+                        <div class="card-body" id="details">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title" id="text"><strong id="reName">Recipe Name:</strong> <?php echo htmlspecialchars($row['reName']); ?></h5>
+                                <small class="text-muted" id="text"><?php echo htmlspecialchars($row['upTime']); ?></small>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title" id="text" style="font-size:17px"><strong id="reName" >Author Name:</strong> <?php echo htmlspecialchars($row['authorName']); ?></h5>
+                            </div>
+                            <div class="d-flex bd-highlight mt-4">
+                                <p class="ratingS" data-rating="1"> <i class="fa-regular fa-star"></i> </p>
+                                <p class="ratingS" data-rating="2"> <i class="fa-regular fa-star"></i> </p>
+                                <p class="ratingS" data-rating="3"> <i class="fa-regular fa-star"></i> </p>
+                                <p class="ratingS" data-rating="4"> <i class="fa-regular fa-star"></i> </p>
+                                <p class="ratingS" data-rating="5"> <i class="fa-regular fa-star"></i> </p>
+                                <p class="ratingS" id="text-2">(0)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php } } ?>
         </div>
     </div>
 

@@ -18,6 +18,8 @@
     <style>
         #title {
             font-family: "Copperplate", Papyrus, fantasy;
+            margin-top: 30px;
+            margin-bottom: 50px;
         }
         #text {
             font-family: 'Trebuchet MS', sans-serif;
@@ -36,8 +38,10 @@
         #card:hover {
             opacity: 50%;
         }
-        #card {
+        #cardS {
             justify-content: start;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            border: none;
         }
         #vR {
             border-left: 1px solid #784464;
@@ -53,6 +57,9 @@
         }
         .fa-star {
             color:#784464;
+        }
+        body {
+            margin-bottom: 50px;
         }
     </style>
 </head>
@@ -101,6 +108,7 @@
                                 <p class="ratingS" data-rating="3"> <i class="fa-regular fa-star"></i> </p>
                                 <p class="ratingS" data-rating="4"> <i class="fa-regular fa-star"></i> </p>
                                 <p class="ratingS" data-rating="5"> <i class="fa-regular fa-star"></i> </p>
+                                <p class="text-muted" id="text-2">(0)</p>
                             </div>
                         </div>
                     </div>
@@ -127,24 +135,52 @@
             });
         });
 
-        // Handle star rating click
+        // Handle star rating hover and click
         var ratingStars = document.querySelectorAll(".ratingS");
-        ratingStars.forEach(function(star, index) {
+        var cardContainers = document.querySelectorAll("#card");
+
+        ratingStars.forEach(function(star) {
+            star.addEventListener('mouseenter', function(event) {
+                event.preventDefault();
+                cardContainers.forEach(function(card) {
+                    card.classList.add("disabled");
+                });
+            });
+
+            star.addEventListener('mouseleave', function(event) {
+                event.preventDefault();
+                cardContainers.forEach(function(card) {
+                    card.classList.remove("disabled");
+                });
+            });
+
             star.addEventListener('click', function(event) {
                 event.preventDefault();
                 var rating = star.getAttribute("data-rating");
-                highlightStars(rating);
+                highlightStars(rating, star.closest('.card'));
             });
         });
 
-        function highlightStars(rating) {
-            ratingStars.forEach(function(star, index) {
+        function highlightStars(rating, card) {
+            var stars = card.querySelectorAll(".ratingS");
+            stars.forEach(function(star, index) {
                 if (index < rating) {
                     star.innerHTML = '<i class="fas fa-star"></i>'; // solid star for selected rating
                 } else {
                     star.innerHTML = '<i class="fa-regular fa-star"></i>'; // regular star for unselected
                 }
             });
+        }
+
+        var disableCardEvents = function(card) {
+            card.classList.add("disabled");
+            card.style.pointerEvents = 'none';
+            card.style.opacity = '1'; // Ensure the card's opacity stays the same
+        }
+
+        var enableCardEvents = function(card) {
+            card.classList.remove("disabled");
+            card.style.pointerEvents = 'auto';
         }
     });
 </script>

@@ -182,13 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
             <button id="btn" onclick="openEmailModal('username')"><i id="icons2" class="fa-solid fa-pen-to-square"></i></button>
         </div>
     </div>
-    <div class="container mt-2" style="background-color:#d7c7d1;width:400px">
-        <div class="d-flex justify-content-between">
-            <div class="p-2">Password:</div>
-            <div class="p-2"><?php echo htmlspecialchars($password, ENT_QUOTES, 'UTF-8'); ?></div>
-            <button id="btn" onclick="openEmailModal('password')"><i id="icons2" class="fa-solid fa-pen-to-square"></i></button>
-        </div>
-    </div>
+
    
 
     <!-- Edit Information Modal -->

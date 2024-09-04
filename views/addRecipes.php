@@ -25,6 +25,7 @@ if (isset($_POST['submit'])) {
                         $recipeId = $row['reId'];
                     }
                 }
+                echo $recipeId;
           // header("Location: home.php");
        } else {
            $errorMsg = "Failed to add recipe";
@@ -46,7 +47,8 @@ if (isset($_POST['submit'])) {
             if ($stmtImage->execute()) {
                 $errorMsg = "Image uploaded successfully";
                 $imageUploaded = true;
-                header("location: home.php");
+                echo $errorMsg;
+                //header("location: home.php");
             } else {
                 $errorMsg = "Failed to upload image";
             }

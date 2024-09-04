@@ -21,6 +21,7 @@
             }
             break;
         case 'login':
+                //$password = password_hash($data['password'], PASSWORD_BCRYPT);
             if(signin($data['username'],$data['password'])){
                 $result=getData($data['username']);
                 $row=$result->fetch_assoc();

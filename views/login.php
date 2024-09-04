@@ -172,6 +172,7 @@
             xml.onload = function() {
                 if (this.status == 200) {
                     var response = JSON.parse(this.responseText);
+                    console.log(response);
                     if (response.status == 'success') {
                         window.location.href = "home.php";
                     } else {

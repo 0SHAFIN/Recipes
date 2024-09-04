@@ -2,6 +2,7 @@
     require_once 'dbCon.php';
     function signup($name,$phone,$gender,$username,$password)
     {
+        $password = password_hash($password, PASSWORD_BCRYPT);
         $conn=dbConnection();
         $sql = "INSERT INTO `userinfo` (`name`, `phone`, `gender`, `username`, `password`) VALUES ('$name', '$phone', '$gender', '$username', '$password')";
         $result = $conn->query($sql) ;
@@ -9,10 +10,15 @@
     }
     function signin($username, $password) {
         $conn = dbConnection();
-        $sql = "SELECT * FROM `userinfo` WHERE `username` = '$username'and `password` = '$password'";
+        $sql = "SELECT password FROM `userinfo` WHERE `username` = '$username'";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
-            return true;
+            $result = $result->fetch_assoc();
+            if(password_verify($password, $result['password'])) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -52,17 +58,17 @@
     function addRecipes($userId,$reName,$ingredients,$description,$category,$authorName,$time)
     {
         $conn = dbConnection();
-        $sql = "INSERT INTO `urecipe` (`userId`, `reName`, `ingredients`, `descriptions`, `category`, `authorName`, `uptime`) VALUES ('$userId', '$reName', '$ingredients', '$description', '$category', '$authorName', '$time')";
+        $sql = "INSERT INTO `urecipe` (`userId`, `reName`, `ingredients`, `descriptions`, `category`, `authorName`, `upTime`) VALUES ('$userId', '$reName', '$ingredients', '$description', '$category', '$authorName', '$time')";
         $result = $conn->query($sql);
         if ($result) {
             return true;
         } else {
             return false;
         }
-    } function getRecipes($userId)
+    } function getRecipes($reId)
     {
         $conn = dbConnection();
-        $sql = "SELECT * FROM `urecipe` WHERE `userId` = '$userId'";
+        $sql = "SELECT * FROM `urecipe` WHERE `reId` = '$reId'";
         $result = $conn->query($sql);
         return $result;
     }
@@ -77,6 +83,20 @@
     {
         $conn = dbConnection();
         $sql = "SELECT * FROM `urecipe`";
+        $result = $conn->query($sql);
+        return $result;
+    }
+    function recipeBytCT($category)
+    {
+        $conn = dbConnection();
+        $sql = "SELECT * FROM `urecipe` WHERE `category` = '$category'";
+        $result = $conn->query($sql);
+        return $result;
+    }
+    function getRecipeById($userId)
+    {
+        $conn = dbConnection();
+        $sql = "SELECT * FROM `urecipe` WHERE `userId` = '$userId'";
         $result = $conn->query($sql);
         return $result;
     }

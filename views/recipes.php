@@ -3,7 +3,7 @@
     require_once '../model/auth.php';
     $name=$_SESSION['name'];
     $userId=$_SESSION['uId'];
-    $recipesDetails = getRecipes($userId);
+    $recipesDetails = getRecipeById($userId);
 ?>
 
 <!DOCTYPE html>
@@ -97,7 +97,7 @@
                 while($row = $recipesDetails->fetch_assoc()) { ?>
                 <div class="col">
                     <div class="card h-100" id="cardS" style="background-color:#f2ecf0">
-                        <img id="card" src="../recipesimages/<?php echo htmlspecialchars(getRecipeImg($row['reId'])->fetch_assoc()['reImages']); ?>" class="card-img-top" alt="recipe" style="width:100%; height:200px; object-fit:cover;">
+                        <img id="card" src="../recipesimages/<?php echo htmlspecialchars(getRecipeImg($row['reId'])->fetch_assoc()['reImages']); ?>" class="card-img-top" alt="recipe" style="width:100%; height:200px; object-fit:cover;" data-reId="<?php echo htmlspecialchars($row['reId']); ?>">
                         <div class="card-body" id="details">
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title" id="text"><strong id="reName">Recipe Name:</strong> <?php echo htmlspecialchars($row['reName']); ?></h5>
@@ -132,7 +132,8 @@
         recipeDetails.forEach(function(card) {
             card.addEventListener('click', function(event) {
                 event.preventDefault();
-                window.location.href = "recipesDetails.php";
+                //alert("Recipe ID: " + card.getAttribute("data-reId"));
+                window.location.href = "recipesDetails.php?reId=" + card.getAttribute("data-reId");
             });
         });
 
